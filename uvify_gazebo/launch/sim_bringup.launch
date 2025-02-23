@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<launch>    
+    <!-- gazebo configs -->
+    <arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="true"/>
+    <arg name="paused" default="false"/>
+    <arg name="vehicle_name" default="uvify"/>
+    <arg name="ID" default="0"/>
+    
+    <!-- Start Gazebo Simulation -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+    </include>
+    
+    <group ns="$(arg vehicle_name)$(arg ID)">
+        <!-- Vehicle pose arguments -->
+        <arg name="x" default="0"/>
+        <arg name="y" default="0"/>
+        <arg name="z" default="0"/>
+        <arg name="R" default="0"/>
+        <arg name="P" default="0"/>
+        <arg name="Y" default="0"/>
+        <!-- MAVROS and vehicle configs -->
+        <arg name="_temp1" default="udp://:"/>
+        <arg name="_temp2" default="$(eval 14540 + arg('ID'))"/>
+        <arg name="_temp3" default="@localhost:"/>
+        <arg name="_temp4" default="$(eval 14580 + arg('ID'))"/>
+        <arg name="fcu_url" default="$(arg _temp1)$(arg _temp2)$(arg _temp3)$(arg _temp4)"/>
+        
+        <include file="$(find uvify_gazebo)/launch/spawn_single.launch">
+            <arg name="x" value="$(arg x)"/>
+            <arg name="y" value="$(arg y)"/>
+            <arg name="z" value="$(arg z)"/>
+            <arg name="R" value="$(arg R)"/>
+            <arg name="P" value="$(arg P)"/>
+            <arg name="Y" value="$(arg Y)"/>
+            <arg name="vehicle_name" value="$(arg vehicle_name)"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="camera" value="false"/>
+            <arg name="interactive" value="true"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find uvify_gazebo)/px4_custom/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+            <arg name="respawn_mavros" value="false"/>
+            <arg name="base_link_frame_id" value="$(arg vehicle_name)$(arg ID)/base_link"/>
+            <arg name="odom_frame_id" value="$(arg vehicle_name)$(arg ID)/odom"/>
+            <arg name="map_frame_id" value="$(arg vehicle_name)$(arg ID)/map"/>
+        </include>
+    </group>    
+</launch>

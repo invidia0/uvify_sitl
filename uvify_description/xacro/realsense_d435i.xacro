@@ -34,7 +34,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="1.5707 0 1.5707" />
       <geometry>
-        <mesh filename="package://ifo_description/meshes/d435.dae" />
+        <mesh filename="package://uvify_description/meshes/d435.dae" />
       </geometry>
     </visual>
   </link>

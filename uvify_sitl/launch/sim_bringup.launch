@@ -15,7 +15,10 @@
         <arg name="verbose" value="$(arg verbose)"/>
         <arg name="paused" value="$(arg paused)"/>
     </include>
-    
+
+    <!-- Launch RViz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find uvify_sitl)/rviz/uvify_sitl.rviz" required="false"/>
+
     <group ns="$(arg vehicle_name)$(arg ID)">
         <!-- Vehicle pose arguments -->
         <arg name="x" default="0"/>
@@ -31,7 +34,7 @@
         <arg name="_temp4" default="$(eval 14580 + arg('ID'))"/>
         <arg name="fcu_url" default="$(arg _temp1)$(arg _temp2)$(arg _temp3)$(arg _temp4)"/>
         
-        <include file="$(find uvify_gazebo)/launch/spawn_single.launch">
+        <include file="$(find uvify_sitl)/launch/spawn_single.launch">
             <arg name="x" value="$(arg x)"/>
             <arg name="y" value="$(arg y)"/>
             <arg name="z" value="$(arg z)"/>
@@ -44,7 +47,7 @@
             <arg name="interactive" value="true"/>
         </include>
         <!-- MAVROS -->
-        <include file="$(find uvify_gazebo)/px4_custom/px4.launch">
+        <include file="$(find uvify_sitl)/px4_custom/px4.launch">
             <arg name="fcu_url" value="$(arg fcu_url)"/>
             <arg name="gcs_url" value=""/>
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>

@@ -2,14 +2,14 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="iris">
 
   <xacro:macro name="iris_base_macro" params="mavlink_udp_port:=14560 mavlink_tcp_port:=4560 namespace:=default_ns">
-    <xacro:include filename="$(find ifo_description)/materials/materials.xacro" />
+    <xacro:include filename="$(find uvify_description)/materials/materials.xacro" />
     
     <!-- Base Link: Main Chassis -->
-    <link name="base_link">
+    <link name="${namespace}/base_link">
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <visual>
         <geometry>
-          <mesh filename="package://ifo_description/meshes/iris.stl" />
+          <mesh filename="package://uvify_description/meshes/iris.stl" />
         </geometry>
         <material name="DarkGrey"/>
       </visual>
@@ -40,7 +40,7 @@
       </inertial>
     </link>
 
-    <gazebo reference="base_link">        
+    <gazebo reference="${namespace}/base_link">        
       <collision>
         <surface>
           <contact>
@@ -63,10 +63,10 @@
     <!-- ===================================================================== -->
     <!--                               ROTOR 0                                 -->
     <!-- ===================================================================== -->
-    <link name='rotor_0'>
+    <link name='${namespace}/rotor_0'>
       <visual>
         <geometry>
-          <mesh filename="package://ifo_description/meshes/iris_prop_ccw.dae"/>
+          <mesh filename="package://uvify_description/meshes/iris_prop_ccw.dae"/>
         </geometry>
         <material name="Blue"/>
       </visual>
@@ -76,16 +76,16 @@
       </inertial>
     </link>
 
-    <joint name="rotor_0_joint" type="revolute">
+    <joint name="${namespace}/rotor_0_joint" type="revolute">
       <origin xyz="0.13 -0.22 0.023" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="rotor_0"/>
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/rotor_0"/>
       <axis xyz="0 0 1"/>
       <limit lower="-1e+16" upper="+1e+16" effort="0" velocity="0"/>
     </joint>
 
     <!-- Gazebo-Specific Properties - Using <gazebo reference="..."> -->
-    <gazebo reference="rotor_0">
+    <gazebo reference="${namespace}/rotor_0">
       <pose>0.13 -0.22 0.023 0 0 0</pose>
       <inertial>
         <mass>0.005</mass>
@@ -120,7 +120,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>$(find ifo_description)/meshes/iris_prop_ccw.dae</uri>
+            <uri>$(find uvify_description)/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -134,17 +134,17 @@
       <velocity_decay/>
     </gazebo>
 
-    <gazebo reference="rotor_0_joint">  <!--  Use <gazebo reference="joint_name"> -->
+    <gazebo reference="${namespace}/rotor_0_joint">  <!--  Use <gazebo reference="joint_name"> -->
     </gazebo> <!-- Add Gazebo-specific joint properties here if needed (often not needed for revolute joints) -->
 
     <!-- ===================================================================== -->
     <!--                               ROTOR 1                                 -->
     <!-- ===================================================================== -->
-    <link name='rotor_1'>
+    <link name='${namespace}/rotor_1'>
       <visual>
         <geometry>
           <!-- <cylinder length="0.01" radius="0.1"/> -->
-          <mesh filename="package://ifo_description/meshes/iris_prop_ccw.dae"/>
+          <mesh filename="package://uvify_description/meshes/iris_prop_ccw.dae"/>
         </geometry>
         <material name="DarkGrey"/>
       </visual>
@@ -154,16 +154,16 @@
       </inertial>
     </link>
 
-    <joint name="rotor_1_joint" type="revolute">
+    <joint name="${namespace}/rotor_1_joint" type="revolute">
       <origin xyz="-0.13 0.2 0.023" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="rotor_1"/>
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/rotor_1"/>
       <axis xyz="0 0 1"/>
       <limit lower="-1e+16" upper="+1e+16" effort="0" velocity="0"/>
     </joint>
 
     <!-- Gazebo-Specific Properties - Using <gazebo reference="..."> -->
-    <gazebo reference="rotor_1">  <!-- Use <gazebo reference="link_name"> -->
+    <gazebo reference="${namespace}/rotor_1">  <!-- Use <gazebo reference="link_name"> -->
       <pose>-0.13 0.2 0.023 0 0 0</pose> <!-- Gazebo-specific pose (if needed) -->
       <inertial>
         <mass>0.005</mass>
@@ -198,7 +198,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>$(find ifo_description)/meshes/iris_prop_ccw.dae</uri>
+            <uri>$(find uvify_description)/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -212,17 +212,17 @@
       <velocity_decay/>
     </gazebo>
 
-    <gazebo reference="rotor_1_joint">  <!-- Use <gazebo reference="joint_name"> -->
+    <gazebo reference="${namespace}/rotor_1_joint">  <!-- Use <gazebo reference="joint_name"> -->
     </gazebo> <!-- Add Gazebo-specific joint properties here if needed -->
 
     <!-- ===================================================================== -->
     <!--                               ROTOR 2                                 -->
     <!-- ===================================================================== -->
-    <link name='rotor_2'>
+    <link name='${namespace}/rotor_2'>
       <visual>
         <geometry>
           <!-- <cylinder length="0.01" radius="0.1"/> -->
-          <mesh filename="package://ifo_description/meshes/iris_prop_cw.dae"/>
+          <mesh filename="package://uvify_description/meshes/iris_prop_cw.dae"/>
         </geometry>
         <material name="Blue"/>
       </visual>
@@ -232,16 +232,16 @@
       </inertial>
     </link>
 
-    <joint name="rotor_2_joint" type="revolute">
+    <joint name="${namespace}/rotor_2_joint" type="revolute">
       <origin xyz="0.13 0.22 0.023" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="rotor_2"/>
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/rotor_2"/>
       <axis xyz="0 0 1"/>
       <limit lower="-1e+16" upper="+1e+16" effort="0" velocity="0"/>
     </joint>
 
     <!-- Gazebo-Specific Properties - Using <gazebo reference="..."> -->
-    <gazebo reference="rotor_2">
+    <gazebo reference="${namespace}/rotor_2">
       <pose>0.13 0.22 0.023 0 0 0</pose>
       <inertial>
         <mass>0.005</mass>
@@ -276,7 +276,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>$(find ifo_description)/meshes/iris_prop_cw.dae</uri>
+            <uri>$(find uvify_description)/meshes/iris_prop_cw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -290,17 +290,17 @@
       <velocity_decay/>
     </gazebo>
 
-    <gazebo reference="rotor_2_joint">
+    <gazebo reference="${namespace}/rotor_2_joint">
     </gazebo>
 
     <!-- ===================================================================== -->
     <!--                               ROTOR 3                                 -->
     <!-- ===================================================================== -->
-    <link name='rotor_3'>
+    <link name='${namespace}/rotor_3'>
       <visual>
         <geometry>
           <!-- <cylinder length="0.01" radius="0.1"/> -->
-          <mesh filename="package://ifo_description/meshes/iris_prop_cw.dae"/>
+          <mesh filename="package://uvify_description/meshes/iris_prop_cw.dae"/>
         </geometry>
         <material name="DarkGrey"/>
       </visual>
@@ -310,16 +310,16 @@
       </inertial>
     </link>
 
-    <joint name="rotor_3_joint" type="revolute">
+    <joint name="${namespace}/rotor_3_joint" type="revolute">
       <origin xyz="-0.13 -0.2 0.023" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="rotor_3"/>
+      <parent link="${namespace}/base_link"/>
+      <child link="${namespace}/rotor_3"/>
       <axis xyz="0 0 1"/>
       <limit lower="-1e+16" upper="+1e+16" effort="0" velocity="0"/>
     </joint>
 
     <!-- Gazebo-Specific Properties - Using <gazebo reference="..."> -->
-    <gazebo reference="rotor_3">
+    <gazebo reference="${namespace}/rotor_3">
       <pose>-0.13 -0.2 0.023 0 0 0</pose>
       <inertial>
         <mass>0.005</mass>
@@ -354,7 +354,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>$(find ifo_description)/meshes/iris_prop_cw.dae</uri>
+            <uri>$(find uvify_description)/meshes/iris_prop_cw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -368,14 +368,14 @@
       <velocity_decay/>
     </gazebo>
 
-    <gazebo reference="rotor_3_joint">
+    <gazebo reference="${namespace}/rotor_3_joint">
     </gazebo>
 
     <!-- ===================================================================== -->
     <!--                                GPS & IMU                              -->
     <!-- ===================================================================== -->
     <gazebo>
-      <link name='imu_link'>
+      <link name='${namespace}/imu_link'>
           <pose>0 0 0 0 0 0</pose>
           <inertial>
           <pose>0 0 0 0 0 0</pose>
@@ -391,9 +391,9 @@
           </inertial>
       </link>
       
-      <joint name='imu_joint' type='revolute'>
-          <child>imu_link</child>
-          <parent>base_link</parent>
+      <joint name='${namespace}/imu_joint' type='revolute'>
+          <child>${namespace}/imu_link</child>
+          <parent>${namespace}/base_link</parent>
           <axis>
           <xyz>1 0 0</xyz>
           <limit>
@@ -417,7 +417,7 @@
       </include>
       <joint name='gps0_joint' type='fixed'>
         <child>gps0::link</child>
-        <parent>base_link</parent>
+        <parent>${namespace}/base_link</parent>
       </joint>
     </gazebo>
     <!-- ===================================================================== -->
@@ -429,15 +429,15 @@
       you cant change the link names for the rotors above.-->
       <plugin name='rosbag' filename='libgazebo_multirotor_base_plugin.so'>
         <robotNamespace/>
-        <linkName>base_link</linkName>
+        <linkName>${namespace}/base_link</linkName>
         <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       </plugin>
       
       
       <plugin name='front_right_motor_model' filename='libgazebo_motor_model.so'>
         <robotNamespace/>
-        <jointName>rotor_0_joint</jointName>
-        <linkName>rotor_0</linkName>
+        <jointName>${namespace}/rotor_0_joint</jointName>
+        <linkName>${namespace}/rotor_0</linkName>
         <turningDirection>ccw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -454,8 +454,8 @@
 
       <plugin name='back_left_motor_model' filename='libgazebo_motor_model.so'>
         <robotNamespace/>
-        <jointName>rotor_1_joint</jointName>
-        <linkName>rotor_1</linkName>
+        <jointName>${namespace}/rotor_1_joint</jointName>
+        <linkName>${namespace}/rotor_1</linkName>
         <turningDirection>ccw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -472,8 +472,8 @@
 
       <plugin name='front_left_motor_model' filename='libgazebo_motor_model.so'>
         <robotNamespace/>
-        <jointName>rotor_2_joint</jointName>
-        <linkName>rotor_2</linkName>
+        <jointName>${namespace}/rotor_2_joint</jointName>
+        <linkName>${namespace}/rotor_2</linkName>
         <turningDirection>cw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -490,8 +490,8 @@
 
       <plugin name='back_right_motor_model' filename='libgazebo_motor_model.so'>
         <robotNamespace/>
-        <jointName>rotor_3_joint</jointName>
-        <linkName>rotor_3</linkName>
+        <jointName>${namespace}/rotor_3_joint</jointName>
+        <linkName>${namespace}/rotor_3</linkName>
         <turningDirection>cw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -650,7 +650,7 @@
       <static>0</static>
       <plugin name='rotors_gazebo_imu_plugin' filename='libgazebo_imu_plugin.so'>
           <robotNamespace/>
-          <linkName>imu_link</linkName>
+          <linkName>${namespace}/imu_link</linkName>
           <imuTopic>/imu</imuTopic>
           <gyroscopeNoiseDensity>0.00018665</gyroscopeNoiseDensity>
           <gyroscopeRandomWalk>3.8785e-05</gyroscopeRandomWalk>

@@ -25,11 +25,12 @@ else
     SUPPRESS_OUTPUT=true
 fi
 
-# setup Gazebo env and update package path
-export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:${PX4_PATH}/build/px4_sitl_default/build_gazebo
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:${PX4_PATH}/Tools/sitl_gazebo/models
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PX4_PATH}/build/px4_sitl_default/build_gazebo
-export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:${PX4_PATH}:${PX4_PATH}/Tools/sitl_gazebo
+export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:${PX4_PATH}/build/px4_sitl_default/build_gazebo-classic
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:${PX4_PATH}/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PX4_PATH}/build/px4_sitl_default/build_gazebo-classic
+
+
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:${PX4_PATH}:${PX4_PATH}/Tools/simulation/gazebo-classic
 
 if [ "$SUPPRESS_OUTPUT" = false ]; then
     echo -e "GAZEBO_PLUGIN_PATH: $GAZEBO_PLUGIN_PATH"

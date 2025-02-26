@@ -11,6 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   message_generation
+  geometry_msgs
+  tf2
+  tf2_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -49,12 +52,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  TestMocapGap.srv 
-  TestMocapSuddenChange.srv
-  TestMocapZeroReading.srv
-)
+# add_service_files(
+#   FILES
+
+# )
 
 
 ## Generate actions in the 'action' folder
@@ -67,7 +68,8 @@ add_service_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
+  std_msgs
+  geometry_msgs
 )
 
 ################################################
@@ -102,7 +104,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES ifo_gazebo
-#  CATKIN_DEPENDS roscpp rospy
+ CATKIN_DEPENDS roscpp rospy geometry_msgs tf2 tf2_ros
 #  DEPENDS system_lib
 )
 
@@ -130,7 +132,9 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/ifo_gazebo_node.cpp)
+add_executable(camera_pose_publisher src/camera_pose_publisher.cpp)
+target_link_libraries(camera_pose_publisher ${catkin_LIBRARIES})
+add_dependencies(camera_pose_publisher ${PROJECT_NAME}_generate_messages_cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

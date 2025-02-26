@@ -51,7 +51,7 @@ global_position:
   gps_uere: 1.0             # User Equivalent Range Error (UERE) of GPS sensor (m)
   use_relative_alt: true    # use relative altitude for local coordinates
   tf:
-    send: true               # send TF?
+    send: false               # send TF?
     frame_id: "uvify0/map"  # TF frame_id
     global_frame_id: "earth"  # TF earth frame_id
     child_frame_id: "uvify0/base_link" # TF child_frame_id
@@ -69,7 +69,7 @@ imu:
 local_position:
   frame_id: "uvify0/map"
   tf:
-    send: false
+    send: true
     frame_id: "uvify0/map"
     child_frame_id: "uvify0/base_link"
     send_fcu: false

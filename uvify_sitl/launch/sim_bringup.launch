@@ -7,7 +7,10 @@
     <arg name="paused" default="false"/>
     <arg name="vehicle_name" default="uvify"/>
     <arg name="ID" default="0"/>
-    
+    <arg name="group" default="true"/>
+    <arg if="$(arg group)" name="ns" value="$(arg vehicle_name)$(arg ID)"/>
+    <arg unless="$(arg group)" name="ns" value=""/>
+
     <!-- Start Gazebo Simulation -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="gui" value="$(arg gui)"/>
@@ -34,6 +37,11 @@
         <arg name="_temp4" default="$(eval 14580 + arg('ID'))"/>
         <arg name="fcu_url" default="$(arg _temp1)$(arg _temp2)$(arg _temp3)$(arg _temp4)"/>
         
+        <!-- TCP Connection -->
+        <!-- <arg name="random_port" default="4000"/>
+        <arg name="fcu_url" default="tcp://localhost:$(arg random_port)"/> -->
+        
+        <!-- Spawn vehicle -->
         <include file="$(find uvify_sitl)/launch/spawn_single.launch">
             <arg name="x" value="$(arg x)"/>
             <arg name="y" value="$(arg y)"/>
@@ -57,5 +65,16 @@
             <arg name="odom_frame_id" value="$(arg vehicle_name)$(arg ID)/odom"/>
             <arg name="map_frame_id" value="$(arg vehicle_name)$(arg ID)/map"/>
         </include>
+
+        <!-- Transform to world -->
+        <node pkg="tf" type="static_transform_publisher" name="world_to_$(arg vehicle_name)$(arg ID)" args="0 0 0 0 0 0 world $(arg vehicle_name)$(arg ID)/map 100" />
+        
+        <!-- Camera Pose Publisher -->
+        <node pkg="uvify_sitl" name="camera_pose_publisher" type="camera_pose_publisher" output="screen">
+            <param name="parent_frame" value="world" />
+            <param name="child_frame" value="$(arg vehicle_name)$(arg ID)/camera_link" />
+            <param name="pose_topic" value="camera/pose" />
+        </node>
+
     </group>    
 </launch>

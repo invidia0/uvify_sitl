@@ -1,4 +1,5 @@
-# Gazebo Model for the Uvify IFO-S with PX4 Software-in-the-Loop
+# TBD
+<!-- # Gazebo Model for the Uvify IFO-S with PX4 Software-in-the-Loop
 
 ![./docs/gazebo_vs_real_flight.gif](./docs/gazebo_vs_real_flight.gif) 
 Simulated quadcopter vs the real quadcopter, running the same code.
@@ -127,4 +128,4 @@ git branch -m master main
 git fetch origin
 git branch -u origin/main main
 git remote set-head origin -a
-```
+``` -->

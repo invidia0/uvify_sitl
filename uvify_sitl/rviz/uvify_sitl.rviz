@@ -5,13 +5,10 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Status1
-        - /RobotModel1
         - /TF1/Status1
-        - /PointCloud21
-        - /PointCloud21/Status1
-      Splitter Ratio: 0.5
-    Tree Height: 725
+        - /TF1/Frames1
+      Splitter Ratio: 0.4852941036224365
+    Tree Height: 1080
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -65,74 +62,74 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        uvify0/base_link:
+        uav0/base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        uvify0/camera_bottom_screw_frame:
+        uav0/camera_bottom_screw_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        uvify0/camera_color_frame:
+        uav0/camera_color_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        uvify0/camera_color_optical_frame:
+        uav0/camera_color_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        uvify0/camera_depth_frame:
+        uav0/camera_depth_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        uvify0/camera_depth_optical_frame:
+        uav0/camera_depth_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        uvify0/camera_left_ir_frame:
+        uav0/camera_left_ir_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        uvify0/camera_left_ir_optical_frame:
+        uav0/camera_left_ir_optical_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        uvify0/camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        uvify0/camera_right_ir_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uvify0/camera_right_ir_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uvify0/rotor_0:
+        uav0/camera_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        uvify0/rotor_1:
+        uav0/camera_right_ir_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        uav0/camera_right_ir_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        uav0/rotor_0:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        uvify0/rotor_2:
+        uav0/rotor_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        uvify0/rotor_3:
+        uav0/rotor_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        uav0/rotor_3:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
       Name: RobotModel
-      Robot Description: /uvify0/robot_description
+      Robot Description: uav0/robot_description
       TF Prefix: ""
       Update Interval: 0
       Value: true
@@ -143,47 +140,51 @@ Visualization Manager:
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
-        All Enabled: true
-        uvify0/base_link:
+        All Enabled: false
+        base_link:
+          Value: false
+        base_link_frd:
+          Value: false
+        map:
           Value: true
-        uvify0/base_link_frd:
+        map_ned:
+          Value: false
+        odom:
+          Value: false
+        odom_ned:
+          Value: false
+        uav0/base_link:
           Value: true
-        uvify0/camera_bottom_screw_frame:
+        uav0/camera_bottom_screw_frame:
+          Value: false
+        uav0/camera_color_frame:
+          Value: false
+        uav0/camera_color_optical_frame:
+          Value: false
+        uav0/camera_depth_frame:
+          Value: false
+        uav0/camera_depth_optical_frame:
+          Value: false
+        uav0/camera_left_ir_frame:
+          Value: false
+        uav0/camera_left_ir_optical_frame:
+          Value: false
+        uav0/camera_link:
           Value: true
-        uvify0/camera_color_frame:
-          Value: true
-        uvify0/camera_color_optical_frame:
-          Value: true
-        uvify0/camera_depth_frame:
-          Value: true
-        uvify0/camera_depth_optical_frame:
-          Value: true
-        uvify0/camera_left_ir_frame:
-          Value: true
-        uvify0/camera_left_ir_optical_frame:
-          Value: true
-        uvify0/camera_link:
-          Value: true
-        uvify0/camera_right_ir_frame:
-          Value: true
-        uvify0/camera_right_ir_optical_frame:
-          Value: true
-        uvify0/map:
-          Value: true
-        uvify0/map_ned:
-          Value: true
-        uvify0/odom:
-          Value: true
-        uvify0/odom_ned:
-          Value: true
-        uvify0/rotor_0:
-          Value: true
-        uvify0/rotor_1:
-          Value: true
-        uvify0/rotor_2:
-          Value: true
-        uvify0/rotor_3:
-          Value: true
+        uav0/camera_right_ir_frame:
+          Value: false
+        uav0/camera_right_ir_optical_frame:
+          Value: false
+        uav0/local_origin:
+          Value: false
+        uav0/rotor_0:
+          Value: false
+        uav0/rotor_1:
+          Value: false
+        uav0/rotor_2:
+          Value: false
+        uav0/rotor_3:
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -191,36 +192,38 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        uvify0/map:
-          uvify0/base_link:
-            uvify0/base_link_frd:
-              {}
-            uvify0/camera_bottom_screw_frame:
-              uvify0/camera_link:
-                uvify0/camera_depth_frame:
-                  uvify0/camera_color_frame:
-                    uvify0/camera_color_optical_frame:
-                      {}
-                  uvify0/camera_depth_optical_frame:
-                    {}
-                  uvify0/camera_left_ir_frame:
-                    uvify0/camera_left_ir_optical_frame:
-                      {}
-                  uvify0/camera_right_ir_frame:
-                    uvify0/camera_right_ir_optical_frame:
-                      {}
-            uvify0/rotor_0:
-              {}
-            uvify0/rotor_1:
-              {}
-            uvify0/rotor_2:
-              {}
-            uvify0/rotor_3:
-              {}
-          uvify0/map_ned:
+        base_link:
+          base_link_frd:
             {}
-        uvify0/odom:
-          uvify0/odom_ned:
+        map:
+          map_ned:
+            {}
+          uav0/local_origin:
+            uav0/base_link:
+              uav0/camera_bottom_screw_frame:
+                uav0/camera_link:
+                  uav0/camera_depth_frame:
+                    uav0/camera_color_frame:
+                      uav0/camera_color_optical_frame:
+                        {}
+                    uav0/camera_depth_optical_frame:
+                      {}
+                    uav0/camera_left_ir_frame:
+                      uav0/camera_left_ir_optical_frame:
+                        {}
+                    uav0/camera_right_ir_frame:
+                      uav0/camera_right_ir_optical_frame:
+                        {}
+              uav0/rotor_0:
+                {}
+              uav0/rotor_1:
+                {}
+              uav0/rotor_2:
+                {}
+              uav0/rotor_3:
+                {}
+        odom:
+          odom_ned:
             {}
       Update Interval: 0
       Value: true
@@ -247,7 +250,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /uvify0/depth/color/points
+      Topic: /uav0/camera/depth/color/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -256,7 +259,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: uvify0/base_link
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -280,7 +283,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.795539855957031
+      Distance: 12.057198524475098
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -288,25 +291,25 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.2363841533660889
-        Y: 2.2378835678100586
-        Z: 1.7807505130767822
+        X: 1.1472975015640259
+        Y: 1.9571876525878906
+        Z: 2.1878347396850586
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.93039870262146
+      Pitch: 0.48539793491363525
       Target Frame: <Fixed Frame>
-      Yaw: 1.8703981637954712
+      Yaw: 2.7203943729400635
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1016
+  Height: 1371
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001560000035efc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b0000035e000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f0000035efc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b0000035e000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073a0000003efc0100000002fb0000000800540069006d006501000000000000073a0000030700fffffffb0000000800540069006d00650100000000000004500000000000000000000004c90000035e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000156000004c1fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b000004c1000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f000004c1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b000004c1000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009be0000003efc0100000002fb0000000800540069006d00650100000000000009be0000030700fffffffb0000000800540069006d006501000000000000045000000000000000000000074d000004c100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -315,6 +318,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1850
-  X: 2310
-  Y: 27
+  Width: 2494
+  X: 66
+  Y: 32

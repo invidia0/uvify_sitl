@@ -11,8 +11,8 @@
     <arg name="Y" default="0"/>
     <arg name="vehicle_name" default="uvify"/>
     <arg name="ID" default="1"/>
-    <arg name="camera" default="true"/>
     <arg name="interactive" default="true"/>
+    <arg name="camera_pose_parent_frame" default="map"/>
 
     <!-- Vehicle model and config arguments -->
     <arg name="est" default="ekf2"/>
@@ -43,6 +43,12 @@
         <param name="publish_frequency" type="double" value="30.0" />
     </node>
     <!-- Joint State Publisher -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen"/>
+    <!-- Camera Pose Publisher -->
+    <node pkg="uvify_sitl" name="camera_pose_publisher" type="camera_pose_publisher" output="screen">
+        <param name="parent_frame" value="$(arg camera_pose_parent_frame)" />
+        <param name="child_frame" value="$(arg vehicle_name)$(arg ID)/camera_link" />
+        <param name="pose_topic" value="camera/pose" />
     </node>
+
 </launch>

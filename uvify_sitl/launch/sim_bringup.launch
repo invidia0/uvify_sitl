@@ -5,11 +5,12 @@
     <arg name="debug" default="false"/>
     <arg name="verbose" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="vehicle_name" default="uvify"/>
-    <arg name="ID" default="0"/>
+    <arg name="vehicle_name" default="uav"/>
     <arg name="group" default="true"/>
-    <arg if="$(arg group)" name="ns" value="$(arg vehicle_name)$(arg ID)"/>
-    <arg unless="$(arg group)" name="ns" value=""/>
+    <arg name="camera_pose_parent_frame" default="map"/>
+    <!-- Set to true if you want to publish a static transform from map to vehicle base_link 
+    if using px4_base package with supervisor set to false.-->
+    <arg name="need_transform" default="false"/> 
 
     <!-- Start Gazebo Simulation -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -22,59 +23,44 @@
     <!-- Launch RViz -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find uvify_sitl)/rviz/uvify_sitl.rviz" required="false"/>
 
-    <group ns="$(arg vehicle_name)$(arg ID)">
-        <!-- Vehicle pose arguments -->
-        <arg name="x" default="0"/>
-        <arg name="y" default="0"/>
-        <arg name="z" default="0"/>
-        <arg name="R" default="0"/>
-        <arg name="P" default="0"/>
-        <arg name="Y" default="0"/>
+    <group ns="uav0">
+        <arg name="ID" value="0"/>
         <!-- MAVROS and vehicle configs -->
         <arg name="_temp1" default="udp://:"/>
         <arg name="_temp2" default="$(eval 14540 + arg('ID'))"/>
         <arg name="_temp3" default="@localhost:"/>
         <arg name="_temp4" default="$(eval 14580 + arg('ID'))"/>
         <arg name="fcu_url" default="$(arg _temp1)$(arg _temp2)$(arg _temp3)$(arg _temp4)"/>
-        
-        <!-- TCP Connection -->
-        <!-- <arg name="random_port" default="4000"/>
-        <arg name="fcu_url" default="tcp://localhost:$(arg random_port)"/> -->
-        
+
         <!-- Spawn vehicle -->
         <include file="$(find uvify_sitl)/launch/spawn_single.launch">
-            <arg name="x" value="$(arg x)"/>
-            <arg name="y" value="$(arg y)"/>
-            <arg name="z" value="$(arg z)"/>
-            <arg name="R" value="$(arg R)"/>
-            <arg name="P" value="$(arg P)"/>
-            <arg name="Y" value="$(arg Y)"/>
+            <arg name="x" value="0"/>
+            <arg name="y" value="0"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
             <arg name="vehicle_name" value="$(arg vehicle_name)"/>
+            <arg name="mavlink_udp_port" value="14560"/>
+            <arg name="mavlink_tcp_port" value="4560"/>
             <arg name="ID" value="$(arg ID)"/>
-            <arg name="camera" value="false"/>
-            <arg name="interactive" value="true"/>
+            <arg name="gst_udp_port" value="$(eval 5600 + arg('ID'))"/>
+            <arg name="video_uri" value="$(eval 5600 + arg('ID'))"/>
+            <arg name="mavlink_cam_udp_port" value="$(eval 14530 + arg('ID'))"/>
+            <arg name="camera_pose_parent_frame" value="$(arg camera_pose_parent_frame)"/>
         </include>
         <!-- MAVROS -->
-        <include file="$(find uvify_sitl)/px4_custom/px4.launch">
+        <include file="$(find mavros)/launch/px4.launch">
             <arg name="fcu_url" value="$(arg fcu_url)"/>
             <arg name="gcs_url" value=""/>
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
             <arg name="tgt_component" value="1"/>
-            <arg name="respawn_mavros" value="false"/>
-            <arg name="base_link_frame_id" value="$(arg vehicle_name)$(arg ID)/base_link"/>
-            <arg name="odom_frame_id" value="$(arg vehicle_name)$(arg ID)/odom"/>
-            <arg name="map_frame_id" value="$(arg vehicle_name)$(arg ID)/map"/>
         </include>
 
         <!-- Transform to world -->
-        <node pkg="tf" type="static_transform_publisher" name="world_to_$(arg vehicle_name)$(arg ID)" args="0 0 0 0 0 0 world $(arg vehicle_name)$(arg ID)/map 100" />
-        
-        <!-- Camera Pose Publisher -->
-        <node pkg="uvify_sitl" name="camera_pose_publisher" type="camera_pose_publisher" output="screen">
-            <param name="parent_frame" value="world" />
-            <param name="child_frame" value="$(arg vehicle_name)$(arg ID)/camera_link" />
-            <param name="pose_topic" value="camera/pose" />
-        </node>
+        <group if="$(arg need_transform)" ns="$(arg vehicle_name)$(arg ID)">
+            <node pkg="tf" type="static_transform_publisher" name="world_to_$(arg vehicle_name)$(arg ID)" args="0 0 0 0 0 0 map $(arg vehicle_name)$(arg ID)/base_link 100" />
+        </group>
 
     </group>    
 </launch>

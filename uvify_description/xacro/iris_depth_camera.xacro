@@ -10,10 +10,15 @@
     <xacro:include filename="$(find uvify_description)/xacro/iris.xacro" />
     <xacro:iris_base_macro mavlink_tcp_port="$(arg mavlink_tcp_port)" mavlink_udp_port="$(arg mavlink_udp_port)" namespace="$(arg namespace)"/>
 
-    <xacro:if value="$(arg camera)">
+    <!-- <xacro:if value="$(arg camera)">
         <xacro:include filename="$(find uvify_description)/xacro/d435.xacro"/>
         <xacro:sensor_d435 parent="$(arg namespace)/base_link" name="$(arg namespace)/camera" topics_ns="$(arg namespace)/camera" publish_pointcloud="true">
             <origin xyz="0.12 0 0" rpy="0 0 0" />
         </xacro:sensor_d435>
-    </xacro:if>
+    </xacro:if> -->
+
+    <xacro:include filename="$(find uvify_description)/xacro/realsense_d435i.xacro"/>
+    <xacro:realsense_d435i parent="$(arg namespace)/base_link" name="$(arg namespace)/camera">
+        <origin xyz="0.12 0 0" rpy="0 0 0" />
+    </xacro:realsense_d435i>
 </robot>

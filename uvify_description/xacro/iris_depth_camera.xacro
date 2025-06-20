@@ -15,4 +15,5 @@
         <xacro:sensor_d435 parent="$(arg namespace)/base_link" name="$(arg namespace)/camera" topics_ns="$(arg namespace)/camera" publish_pointcloud="true">
             <origin xyz="0.12 0 0" rpy="0 0 0" />
         </xacro:sensor_d435>
+    </xacro:if>
 </robot>

@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2
   tf2_ros
 )
+find_package(PCL 1.7 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -117,6 +118,8 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
+
 )
 
 ## Declare a C++ library
@@ -133,7 +136,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(camera_pose_publisher src/camera_pose_publisher.cpp)
-target_link_libraries(camera_pose_publisher ${catkin_LIBRARIES})
+target_link_libraries(camera_pose_publisher ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 add_dependencies(camera_pose_publisher ${PROJECT_NAME}_generate_messages_cpp)
 
 ## Rename C++ executable without prefix

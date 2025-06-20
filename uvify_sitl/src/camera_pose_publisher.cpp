@@ -2,58 +2,106 @@
 #include <tf2_ros/transform_listener.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/common/transforms.h>
+#include <mutex>
+#include <tf2_eigen/tf2_eigen.h>
 
-int main(int argc, char** argv){
-    ros::init(argc, argv, "camera_pose_publisher");
+class CameraPoseAndCloudPublisher {
+private:
+  ros::NodeHandle nh_, pnh_;
+  ros::Publisher pose_pub_, cloud_pub_;
+  ros::Subscriber cloud_sub_;
+  ros::Timer pose_timer_;
+  tf2_ros::Buffer tf_buffer_;
+  tf2_ros::TransformListener tf_listener_;
 
-    ros::NodeHandle nh;
-    ros::NodeHandle pnh("~");
+  std::string parent_frame_, child_frame_, pose_topic_, cloud_topic_, cloud_out_topic_;
+  std::mutex tf_mutex_;
 
-    std::string parent_frame, child_frame, pose_topic;
+public:
+  CameraPoseAndCloudPublisher()
+    : nh_(), pnh_("~"), tf_listener_(tf_buffer_) {
 
-    tf2_ros::Buffer tfBuffer;
-    tf2_ros::TransformListener tfListener(tfBuffer);
+    // Load params
+    pnh_.param<std::string>("parent_frame", parent_frame_, "world");
+    pnh_.param<std::string>("child_frame", child_frame_, "/camera_optical_frame");
+    pnh_.param<std::string>("pose_topic", pose_topic_, "/camera/pose");
+    pnh_.param<std::string>("cloud_topic", cloud_topic_, "/camera/depth/points");
+    pnh_.param<std::string>("cloud_out_topic", cloud_out_topic_, "/camera/points_world");
 
-    // Print the namespace
-    ROS_INFO("[Camera Pose Publisher] > Namespace: %s", nh.getNamespace().c_str());
+    pose_pub_ = nh_.advertise<geometry_msgs::PoseStamped>(pose_topic_, 1);
+    // cloud_pub_ = nh_.advertise<sensor_msgs::PointCloud2>(cloud_out_topic_, 1);
+    // cloud_sub_ = nh_.subscribe(cloud_topic_, 1, &CameraPoseAndCloudPublisher::cloudCallback, this);
 
-    pnh.getParam("parent_frame", parent_frame);
-    pnh.getParam("child_frame", child_frame);
-    pnh.getParam("pose_topic", pose_topic);
+    pose_timer_ = nh_.createTimer(ros::Duration(0.033), &CameraPoseAndCloudPublisher::poseTimerCallback, this);  // 30 Hz
 
-    ros::Publisher pub = nh.advertise<geometry_msgs::PoseStamped>(pose_topic, 1);
-    ros::Rate loop_rate(30);
+    ROS_INFO("[Camera Publisher] Initialized.");
+  }
 
-    geometry_msgs::PoseStamped pose;
-    pose.header.frame_id = parent_frame;
-
-    ROS_INFO("[Camera Pose Publisher] > Camera pose publisher started!");
-    ROS_INFO("[Camera Pose Publisher] > Parent frame: %s", parent_frame.c_str());
-    ROS_INFO("[Camera Pose Publisher] > Child frame: %s", child_frame.c_str());
-    ROS_INFO("[Camera Pose Publisher] > Pose topic: %s", pose_topic.c_str());
-
-    while (ros::ok()){
-        geometry_msgs::TransformStamped transformStamped;
-        try{
-          transformStamped = tfBuffer.lookupTransform(parent_frame, child_frame, ros::Time(0));
-
-          pose.header.stamp = transformStamped.header.stamp;
-          pose.pose.position.x = transformStamped.transform.translation.x;
-          pose.pose.position.y = transformStamped.transform.translation.y;
-          pose.pose.position.z = transformStamped.transform.translation.z;
-          pose.pose.orientation = transformStamped.transform.rotation;
-
-          pub.publish(pose);
-        }
-        catch (tf2::TransformException &ex) {
-          ROS_WARN("%s",ex.what());
-          ros::Duration(1.0).sleep();
-          continue;
-        }
-
-        loop_rate.sleep();
+  void poseTimerCallback(const ros::TimerEvent&) {
+    geometry_msgs::TransformStamped tf_stamped;
+    try {
+      std::lock_guard<std::mutex> lock(tf_mutex_);
+      tf_stamped = tf_buffer_.lookupTransform(parent_frame_, child_frame_, ros::Time(0));
+    } catch (tf2::TransformException &ex) {
+      ROS_WARN_THROTTLE(1.0, "[Camera Publisher] TF lookup failed: %s", ex.what());
+      return;
     }
 
-    return 0;
+    geometry_msgs::PoseStamped pose;
+    pose.header.stamp = tf_stamped.header.stamp;
+    pose.header.frame_id = parent_frame_;
+    pose.pose.position.x = tf_stamped.transform.translation.x;
+    pose.pose.position.y = tf_stamped.transform.translation.y;
+    pose.pose.position.z = tf_stamped.transform.translation.z;
+    pose.pose.orientation = tf_stamped.transform.rotation;
+
+    pose_pub_.publish(pose);
+  }
+
+  // void cloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg) {
+  //   /* Transform the pointcloud from camera_optical_frame to world */
+  //   geometry_msgs::TransformStamped tf_stamped;
+  //   try {
+  //     std::lock_guard<std::mutex> lock(tf_mutex_);
+  //     tf_stamped = tf_buffer_.lookupTransform(parent_frame_, child_frame_, ros::Time(0));
+  //   } catch (tf2::TransformException &ex) {
+  //     ROS_WARN_THROTTLE(1.0, "[Camera Publisher] TF lookup failed: %s", ex.what());
+  //     return;
+  //   }
+  //   sensor_msgs::PointCloud2 cloud_out;
+  //   try {
+  //     // Transform the point cloud
+  //     pcl::PointCloud<pcl::PointXYZ> cloud_in;
+  //     pcl::fromROSMsg(*msg, cloud_in);
+  //     pcl::PointCloud<pcl::PointXYZ> cloud_out_pcl;
+
+  //     Eigen::Affine3d transform = tf2::transformToEigen(tf_stamped.transform);
+  //     pcl::transformPointCloud(cloud_in, cloud_out_pcl, transform);
+
+  //     pcl::toROSMsg(cloud_out_pcl, cloud_out);
+  //     cloud_out.header = msg->header;
+  //     cloud_out.header.frame_id = parent_frame_;
+
+  //     cloud_pub_.publish(cloud_out);
+  //   } catch (std::exception& e) {
+  //     ROS_ERROR_STREAM("PointCloud transform error: " << e.what());
+  //   }
+  // }
+
+  void spin() {
+    ros::spin();
+  }
 };
+
+int main(int argc, char** argv) {
+  ros::init(argc, argv, "camera_pose_publisher");
+  CameraPoseAndCloudPublisher node;
+  node.spin();
+  return 0;
+}

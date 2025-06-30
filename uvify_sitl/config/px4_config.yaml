@@ -71,7 +71,7 @@ local_position:
   tf:
     send: true
     frame_id: "map"
-    child_frame_id: "base_link"
+    child_frame_id: "drone_0/base_link" # --- CHANGE HERE ---  Sending the TF with the drone ID
     send_fcu: false
 
 # param

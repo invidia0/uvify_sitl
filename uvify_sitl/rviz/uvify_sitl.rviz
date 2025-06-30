@@ -5,8 +5,9 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1/Status1
+        - /TF1
         - /TF1/Frames1
+        - /PointCloud21
       Splitter Ratio: 0.4852941036224365
     Tree Height: 1080
   - Class: rviz/Selection
@@ -52,88 +53,6 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Alpha: 1
-      Class: rviz/RobotModel
-      Collision Enabled: false
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        uav0/base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        uav0/camera_bottom_screw_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_color_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_color_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_depth_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_depth_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_left_ir_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_left_ir_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        uav0/camera_right_ir_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/camera_right_ir_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        uav0/rotor_0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        uav0/rotor_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        uav0/rotor_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        uav0/rotor_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Name: RobotModel
-      Robot Description: uav0/robot_description
-      TF Prefix: ""
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
     - Class: rviz/TF
       Enabled: true
       Filter (blacklist): ""
@@ -142,49 +61,25 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_link:
-          Value: false
+          Value: true
         base_link_frd:
           Value: false
+        camera_link:
+          Value: false
+        drone_0/base_link:
+          Value: false
+        drone_0/local_origin:
+          Value: false
         map:
-          Value: true
+          Value: false
         map_ned:
           Value: false
         odom:
           Value: false
         odom_ned:
           Value: false
-        uav0/base_link:
+        world:
           Value: true
-        uav0/camera_bottom_screw_frame:
-          Value: false
-        uav0/camera_color_frame:
-          Value: false
-        uav0/camera_color_optical_frame:
-          Value: false
-        uav0/camera_depth_frame:
-          Value: false
-        uav0/camera_depth_optical_frame:
-          Value: false
-        uav0/camera_left_ir_frame:
-          Value: false
-        uav0/camera_left_ir_optical_frame:
-          Value: false
-        uav0/camera_link:
-          Value: true
-        uav0/camera_right_ir_frame:
-          Value: false
-        uav0/camera_right_ir_optical_frame:
-          Value: false
-        uav0/local_origin:
-          Value: false
-        uav0/rotor_0:
-          Value: false
-        uav0/rotor_1:
-          Value: false
-        uav0/rotor_2:
-          Value: false
-        uav0/rotor_3:
-          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -192,39 +87,21 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        base_link:
-          base_link_frd:
-            {}
-        map:
-          map_ned:
-            {}
-          uav0/local_origin:
-            uav0/base_link:
-              uav0/camera_bottom_screw_frame:
-                uav0/camera_link:
-                  uav0/camera_depth_frame:
-                    uav0/camera_color_frame:
-                      uav0/camera_color_optical_frame:
-                        {}
-                    uav0/camera_depth_optical_frame:
-                      {}
-                    uav0/camera_left_ir_frame:
-                      uav0/camera_left_ir_optical_frame:
-                        {}
-                    uav0/camera_right_ir_frame:
-                      uav0/camera_right_ir_optical_frame:
-                        {}
-              uav0/rotor_0:
-                {}
-              uav0/rotor_1:
-                {}
-              uav0/rotor_2:
-                {}
-              uav0/rotor_3:
-                {}
         odom:
           odom_ned:
             {}
+        world:
+          map:
+            base_link:
+              base_link_frd:
+                {}
+              camera_link:
+                {}
+            drone_0/local_origin:
+              drone_0/base_link:
+                {}
+            map_ned:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -250,7 +127,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /uav0/camera/depth/color/points
+      Topic: /drone_0/camera/depth/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -259,7 +136,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: map
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -283,7 +160,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 12.057198524475098
+      Distance: 4.927482604980469
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -291,17 +168,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.1472975015640259
-        Y: 1.9571876525878906
-        Z: 2.1878347396850586
+        X: -0.04020367190241814
+        Y: 0.5275874733924866
+        Z: 1.2414395809173584
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.48539793491363525
+      Pitch: 0.8753976821899414
       Target Frame: <Fixed Frame>
-      Yaw: 2.7203943729400635
+      Yaw: 2.605393171310425
     Saved: ~
 Window Geometry:
   Displays:
@@ -320,4 +197,4 @@ Window Geometry:
     collapsed: false
   Width: 2494
   X: 66
-  Y: 32
+  Y: 509

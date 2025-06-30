@@ -5,25 +5,22 @@
     <arg name="debug" default="false"/>
     <arg name="verbose" default="true"/>
     <arg name="paused" default="false"/>
-    <arg name="vehicle_name" default="uav"/>
+    <arg name="vehicle_name" default="drone"/>
     <arg name="group" default="true"/>
-    <arg name="camera_pose_parent_frame" default="map"/>
-    <!-- Set to true if you want to publish a static transform from map to vehicle base_link 
-    if using px4_base package with supervisor set to false.-->
-    <arg name="need_transform" default="false"/> 
 
     <!-- Start Gazebo Simulation -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" default="$(find px4_base)/worlds/outdoor_village.world"/>
         <arg name="gui" value="$(arg gui)"/>
         <arg name="debug" value="$(arg debug)"/>
         <arg name="verbose" value="$(arg verbose)"/>
         <arg name="paused" value="$(arg paused)"/>
     </include>
 
-    <!-- Launch RViz -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find uvify_sitl)/rviz/uvify_sitl.rviz" required="false"/>
+    <!-- World - Map transform -->
+    <node pkg="tf" type="static_transform_publisher" name="world_map_linker" args="0 0 0 0 0 0 world map 100" />
 
-    <group ns="uav0">
+    <group ns="drone_0">
         <arg name="ID" value="0"/>
         <!-- MAVROS and vehicle configs -->
         <arg name="_temp1" default="udp://:"/>
@@ -47,20 +44,14 @@
             <arg name="gst_udp_port" value="$(eval 5600 + arg('ID'))"/>
             <arg name="video_uri" value="$(eval 5600 + arg('ID'))"/>
             <arg name="mavlink_cam_udp_port" value="$(eval 14530 + arg('ID'))"/>
-            <arg name="camera_pose_parent_frame" value="$(arg camera_pose_parent_frame)"/>
         </include>
         <!-- MAVROS -->
-        <include file="$(find mavros)/launch/px4.launch">
+        <include file="$(find uvify_sitl)/px4_custom/px4.launch">
             <arg name="fcu_url" value="$(arg fcu_url)"/>
             <arg name="gcs_url" value=""/>
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
             <arg name="tgt_component" value="1"/>
         </include>
-
-        <!-- Transform to world -->
-        <group if="$(arg need_transform)" ns="$(arg vehicle_name)$(arg ID)">
-            <node pkg="tf" type="static_transform_publisher" name="world_to_$(arg vehicle_name)$(arg ID)" args="0 0 0 0 0 0 map $(arg vehicle_name)$(arg ID)/base_link 100" />
-        </group>
 
     </group>    
 </launch>

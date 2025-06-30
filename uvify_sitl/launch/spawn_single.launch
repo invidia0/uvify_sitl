@@ -35,14 +35,14 @@
     <node name="sitl_$(arg ID)" pkg="px4" type="px4" output="screen" args="$(find px4)/build/px4_sitl_default/etc -s etc/init.d-posix/rcS -i $(arg ID) -w sitl_$(arg vehicle)_$(arg ID) $(arg px4_command_arg1)">
     </node>
     <!-- spawn vehicle -->
-    <node name="$(arg vehicle_name)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg sdf) -model $(arg vehicle_name)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+    <node name="$(arg vehicle_name)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg sdf) -model $(arg vehicle_name)$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
 
-    <node pkg="tf" type="static_transform_publisher" name="tf_camera" args="0.1 0 0.0 -1.57 0 -1.57 $(arg vehicle_name)_$(arg ID)/base_link camera_link 33"/>
+    <node pkg="tf" type="static_transform_publisher" name="tf_camera" args="0.1 0 0.0 -1.57 0 -1.57 $(arg vehicle_name)$(arg ID)/base_link $(arg vehicle_name)$(arg ID)/camera_link 33"/>
     <!-- Camera Pose Publisher -->
     <node pkg="uvify_sitl" name="camera_pose_publisher" type="camera_pose_publisher" output="screen">
         <param name="parent_frame" value="world" />
-        <param name="child_frame" value="camera_link" />
-        <param name="pose_topic" value="camera/pose" />
+        <param name="child_frame" value="$(arg vehicle_name)$(arg ID)/camera_link" />
+        <param name="pose_topic" value="$(arg vehicle_name)$(arg ID)/camera/pose" />
     </node>
 
 </launch>
